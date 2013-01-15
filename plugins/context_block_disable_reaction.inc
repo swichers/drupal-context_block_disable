@@ -11,11 +11,17 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
 
     $defaults = $this->fetch_from_context($context);
 
-    foreach ($defaults['blocks'] as $module => $block_info) {
+    if (!empty($defaults['blocks']) && is_array($defaults['blocks'])) {
 
-      foreach ($block_info as $block_name) {
+      foreach ($defaults['blocks'] as $module => $block_info) {
 
-        $form['selector'][$module][$block_name]['#default_value'] = TRUE;
+        if (is_array($block_info)) {
+
+          foreach ($block_info as $block_name) {
+
+            $form['selector'][$module][$block_name]['#default_value'] = TRUE;
+          }
+        }
       }
     }
 
