@@ -4,7 +4,9 @@
  * Allows disabling of blocks as a Context reaction
  */
 
-
+/**
+ * Implements hook_context_plugins().
+ */
 function context_block_disable_context_plugins() {
 
   $plugins = array();
@@ -20,6 +22,9 @@ function context_block_disable_context_plugins() {
   return $plugins;
 }
 
+/**
+ * Implements hook_context_registry().
+ */
 function context_block_disable_context_registry() {
 
   return array(
@@ -33,7 +38,7 @@ function context_block_disable_context_registry() {
 }
 
 /**
- * Implements hook_page_build().
+ * Implements hook_block_view_alter().
  */
 function context_block_disable_block_view_alter(&$data, $block) {
 

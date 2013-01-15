@@ -1,6 +1,9 @@
 INTRODUCTION
 ------------
 
+Provides a reaction plugin for the Context module that allows the disabling of
+blocks.
+
 
 INSTALLATION
 ------------
@@ -10,12 +13,13 @@ INSTALLATION
 CONFIGURATION
 -------------
 
+No special configuration necessary beyond the Context reaction UI.
+
 CONTACT
 -------
 
 Current maintainers:
 * Steven Wichers (steven.wichers) - http://drupal.org/user/1774136
-* Brian Schilt (bschilt) - http://drupal.org/user/399906
 
 
 This project has been sponsored by:
