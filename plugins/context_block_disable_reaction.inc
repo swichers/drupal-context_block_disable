@@ -15,10 +15,10 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
   /**
    * Implements options_form() callback.
    *
-   * Overrides the parent function in order to pull out only the part of the form
-   * we care about, and adjust the selected values due to that change.
+   * Overrides the parent function in order to pull out only the part of the
+   * form we care about, and adjust the selected values due to that change.
    */
-  function options_form($context) {
+  public function options_form($context) {
 
     $form = parent::options_form($context);
 
@@ -50,7 +50,7 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
    * Overrides the parent function in order to handle the lack of regions in
    * this plugin.
    */
-  function options_form_submit($values) {
+  public function options_form_submit($values) {
 
     $blocks = array();
 
@@ -77,11 +77,9 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
    * @param object $block
    *   The block object (bid, delta, region, etc.).
    *
-   * @return NULL
-   *
    * @see hook_block_view_alter()
    */
-  function execute(&$data, $block) {
+  public function execute(&$data, $block) {
 
     $contexts = $this->get_contexts();
 
