@@ -99,14 +99,15 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
         continue;
       }
 
-      foreach ($blocks[$block->module] as $block_info);
+      foreach ($blocks[$block->module] as $block_info) {
 
-      // $block_info is module_name-block-delta.
-      list($module_name, $block_id) = explode('-', $block_info, 2);
+        // $block_info is module_name-block-delta.
+        list($module_name, $block_id) = explode('-', $block_info, 2);
 
-      if ($block->delta == $block_id) {
+        if ($block->delta == $block_id) {
 
-        $data = NULL;
+          $data = NULL;
+        }
       }
     }
   }
