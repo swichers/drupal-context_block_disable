@@ -46,6 +46,7 @@ function context_block_disable_block_view_alter(&$data, $block) {
 
   if ($plugin = context_get_plugin('reaction', 'block_disable')) {
 
-    $plugin->execute($data, $block);
+    $plugin->set_reaction_block($block);
+    $plugin->execute($data);
   }
 }

@@ -12,6 +12,9 @@
  */
 class Context_Block_Disable_Reaction extends context_reaction_block {
 
+  // The block this plugin needs to consider.
+  protected $reaction_block = NULL;
+
   /**
    * Implements options_form() callback.
    *
@@ -74,12 +77,16 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
    * @param array &$data
    *   The block data array (subject, content).
    *
-   * @param object $block
-   *   The block object (bid, delta, region, etc.).
-   *
    * @see hook_block_view_alter()
    */
-  public function execute(&$data, $block) {
+  public function execute(&$data) {
+
+    // Exit early if no reaction block was set.
+    if (empty($this->reaction_block)) {
+
+      return;
+    }
+    $block = $this->reaction_block;
 
     $contexts = $this->get_contexts();
 
@@ -108,5 +115,16 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
         }
       }
     }
+  }
+
+  /**
+   * Sets the block this plugin should use for comparison operations.
+   *
+   * @param object $block
+   *   A block object that at minimum contains the module and delta properties.
+   */
+  public function set_reaction_block($block) {
+
+    $this->reaction_block = $block;
   }
 }
