@@ -23,28 +23,39 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
    */
   public function options_form($context) {
 
-    $form = parent::options_form($context);
+    // Rebuild the block info cache if necessary.
+    $this->get_blocks(NULL, NULL, $this->rebuild_needed());
+    $this->rebuild_needed(FALSE);
 
-    // Change the wrapper class to avoid JS from context_reaction_block.
-    $form['selector']['#prefix'] = '<div class="context-blockdisableform-selector">';
+    $settings = $this->fetch_from_context($context);
 
-    $defaults = $this->fetch_from_context($context);
+    $form = array('#tree' => TRUE);
 
-    if (!empty($defaults['blocks']) && is_array($defaults['blocks'])) {
+    $modules = module_list();
+    $form['selector'] = array(
+      '#type' => 'item',
+      '#tree' => TRUE,
+    );
+    foreach ($this->get_blocks() as $block) {
+      $group = isset($block->context_group) ? $block->context_group : $block->module;
+      if (!isset($form['selector'][$group])) {
+        $form['selector'][$group] = array(
+          '#type' => 'checkboxes',
+          '#title' => isset($block->context_group) ? $block->context_group : $modules[$block->module],
+          '#options' => array(),
+        );
+      }
+      $form['selector'][$group]['#options'][$block->bid] = check_plain($block->info);
 
-      foreach ($defaults['blocks'] as $module => $block_info) {
+      // Set up the selected blocks.
+      if (!empty($settings['blocks'][$block->bid])) {
 
-        if (is_array($block_info)) {
-
-          foreach ($block_info as $block_name) {
-
-            $form['selector'][$module][$block_name]['#default_value'] = TRUE;
-          }
-        }
+        $form['selector'][$group]['#default_value'][] = $block->bid;
       }
     }
+    ksort($form['selector']);
 
-    return $form['selector'];
+    return $form;
   }
 
   /**
@@ -56,14 +67,20 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
   public function options_form_submit($values) {
 
     $blocks = array();
+    $block_info = $this->get_blocks();
 
-    foreach ($values as $module => $block_data) {
+    foreach ($values['selector'] as $module => $selections) {
 
-      foreach ($block_data as $name => $selected) {
+      foreach ($selections as $selected) {
 
         if (!empty($selected)) {
 
-          $blocks[$module][$name] = $selected;
+          $blocks[$selected] = array(
+            'module' => $block_info[$selected]->module,
+            'delta' => $block_info[$selected]->delta,
+            'region' => $block_info[$selected]->region,
+            'weight' => $block_info[$selected]->weight,
+          );
         }
       }
     }
@@ -81,37 +98,28 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
    */
   public function execute(&$data) {
 
-    // Exit early if no reaction block was set.
-    if (empty($this->reaction_block)) {
+    // Exit early if no reaction block was set or data has no content.
+    if (empty($this->reaction_block) || empty($data['content'])) {
 
       return;
     }
     $block = $this->reaction_block;
 
-    $contexts = $this->get_contexts();
+    // Construct a bid that matches what we use on the settings form and what
+    // context_reaction_block also uses.
+    $bid = $block->module . '-' . $block->delta;
 
+    $contexts = $this->get_contexts();
     foreach ($contexts as $context) {
 
-      if (empty($context->reactions[$this->plugin])) {
+      if (!empty($context->reactions[$this->plugin])) {
 
-        continue;
-      }
+        $blocks = $context->reactions[$this->plugin]['blocks'];
+        if (!empty($blocks[$bid])) {
 
-      $blocks = $context->reactions[$this->plugin]['blocks'];
-
-      if (empty($blocks[$block->module])) {
-
-        continue;
-      }
-
-      foreach ($blocks[$block->module] as $block_info) {
-
-        // $block_info is module_name-block-delta.
-        list($module_name, $block_id) = explode('-', $block_info, 2);
-
-        if ($block->delta == $block_id) {
-
-          $data = NULL;
+          // Leave the actual block contents alone, just stop users from being
+          // able to access it.
+          $data['content']['#access'] = FALSE;
         }
       }
     }
