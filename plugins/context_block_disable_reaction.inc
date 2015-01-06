@@ -117,9 +117,25 @@ class Context_Block_Disable_Reaction extends context_reaction_block {
         $blocks = $context->reactions[$this->plugin]['blocks'];
         if (!empty($blocks[$bid])) {
 
-          // Leave the actual block contents alone, just stop users from being
-          // able to access it.
-          $data['content']['#access'] = FALSE;
+          // Swap non-render arrays into render arrays when configured as such.
+          if (variable_get('context_block_disable_force_array', FALSE)) {
+
+            if (!is_array($data['content'])) {
+
+              $data['content'] = array('#markup' => $data['content']);
+            }
+          }
+
+          if (is_array($data['content'])) {
+
+            // Leave the actual block contents alone, just stop users from being
+            // able to access it.
+            $data['content']['#access'] = FALSE;
+          }
+          else {
+
+            $data['content'] = NULL;
+          }
         }
       }
     }
