@@ -7,7 +7,7 @@
 /**
  * Updates the old settings format to the new settings format.
  */
-function context_block_disable_update_7001(&$sandbox) {
+function context_block_disable_update_7200(&$sandbox) {
 
   drupal_load('module', 'block');
   drupal_load('module', 'ctools');
