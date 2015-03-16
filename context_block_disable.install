@@ -51,7 +51,7 @@ function context_block_disable_update_7001(&$sandbox) {
       }
     }
 
-    $reaction_blocks = $new_block_settings;
+    $context->reactions['block_disable']['blocks'] = $new_block_settings;
     context_save($context);
     $updated[] = $context->name;
   }
