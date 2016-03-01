@@ -22,8 +22,8 @@ adjusting of module weights through an interface.
 
 Two such modules are:
 
- * [modules_weight][5]
- * [Util][6]
+ * [modules_weight][4]
+ * [Util][5]
 
 ## Related
 
