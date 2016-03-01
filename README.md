@@ -33,20 +33,8 @@ Pairs well with [Context Mobile Detect][3]
 
 Usage of this plugin is fairly straightforward. Enable it as you would any other module. A new reaction should be available within the Context UI. The form it provides is the same form as the stock Context Block reaction block selection form.
 
-## This project has been sponsored by
-
-**McMurry/TMG**
-
-> McMurry/TMG is a world-leading, results-focused content marketing
-> firm. We leverage the power of world-class content — in the form of
-> the broad categories of video, websites, print and mobile — to keep
-> our clients’ brands top of mind with their customers.  Visit
-> [http://www.mcmurrytmg.com][4] for more information.
-
-
   [1]: http://drupal.org/project/context
   [2]: http://drupal.org/documentation/install/modules-themes/modules-7
   [3]: http://drupal.org/project/context_mobile_detect
-  [4]: http://www.mcmurrytmg.com
-  [5]: https://www.drupal.org/project/modules_weight
-  [6]: https://www.drupal.org/project/util
+  [4]: https://www.drupal.org/project/modules_weight
+  [5]: https://www.drupal.org/project/util
